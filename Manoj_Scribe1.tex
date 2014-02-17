@@ -1,0 +1,142 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[document]{ragged2e}
+
+\usepackage{amsmath}
+\newcommand*{\Comb}[2]{{}^{#1}C_{#2}}%
+{\sfCS6845: MTTOC \hfill Name: MANOJ KALASKAR}
+\vspace{3mm}\\ 
+\noindent 
+{\sf Scribe\#1 \hfill Roll No: CS13M027}
+\vspace{3mm}
+
+\hrule
+\vspace{7mm}
+
+\begin{document}
+
+\section{Hypergraph colouring}
+\par
+
+Hypergraph is a graph where an edge can be connected to any number of vertices(and not just two). We define hypergraph formally as 
+     $H(V,E)$ where V is a set of vertices and E is set of edges where $e\in E$ $\subseteq P(V)\setminus \phi$ where $P(V)$ is a power set of $V$. \\
+     
+\textbf {Definations : }
+
+\begin{itemize}
+  \item A hypergraph is said to be $n$-$uniform$ if every edge contains exactly $n$ vertices.
+  \item A hypergraph colouring is said to be valid  iff there is no  monochromatic edge with cardinality atleast 2. A hypergraph is $k$-$colourable$ if there exist colouring, using upto $k$ colours.   
+  \end{itemize}
+\\
+\textbf{Goal: }
+Given $n$, we want to compute the smallest number of hyper edges
+for which there exits a $n$-$uniform$ hypergraph which is NOT $2$-$colourable$(means which is monochromatic),we label it $m(n)$.
+\\
+\\
+
+\textbf{Lower Bound on m(n): }
+
+$Claim$: All $n$-$uniform$ hypergraphs H with$|E(H)|$$<$ $2^{n-1}$ are 2-$colourable$. Hence $m(n) \geq 2^{n-1}$.
+
+$Proof :$  To show that 2-$colouring$ is possible, it is enough to show that 2-$colouring$ exits.
+
+Let the $n$-$regular$ hypergraph with $|E|<2^{n-1}$.\\
+
+\begin{centering}
+\vspace{5mm}
+Pr(graph is 2-colourable) $>$ 0 \\
+\end{centering}
+
+which is equivalent of
+
+\begin{centering}
+Pr(graph is monochromatic) $<$ 1
+\end{centering}
+\vspace{5mm}
+\begin{centering}
+
+Pr( H is monochromatic) = Pr(each edge is monochromatic )\\
+\vspace{7mm}
+ \hspace{40mm} \leq \sum\limits_{e\in E(H)} Pr($e is monochromatic$)
+ \vspace{7mm}
+ \hspace{10mm} $=$ \sum\limits_{e\in E(H)} \frac{2}{2^{n}}
+  \newpage
+ \hspace{35mm} $=$  $\frac{|E(H)|}{2^{n-1}}$ $<$ 1 (as $|E(H)| < 2^{n-1}.)$\\
+\end{centering}
+\vspace{7mm}
+ So, this results proves that there exits 2-$colouring$.
+ \par
+ \newline
+ \vspace{10mm} \hspace{5mm}
+ \textbf{Upper Bound on m(n):}
+ \par
+ We have to find the maximum m(n) for which the given graph is monochromatic.
+ \par
+Here instead of fixing the hypergraph(like in the previous claim), we will fix the colouring. We show that randomly constructed hypergraph with $|V|$ vertices has the required upper bound and then find the optimal bound.
+\\
+Let us pick vertices independently and uniformly at random. We form $m$ hyperedges of size $n$. We have  $ \Comb{|V|}{n}$ possible edges.
+
+We want to show
+Pr_E [ $\exists$ a colouring such that no hyperedge in $E$ is monochomratic] $<$ 1\\
+
+
+Now lets analyze for fixed colouring.\\
+
+\begin{centering}
+
+$Pr(m)$=$Pr$[A hyperedge picked is monochromatic] \\
+=$\frac{\Comb{|V_R|}{n}+\Comb{|V_B|}{n}}{\Comb{|V|}{n}}$
+$\geq$ $\frac{\Comb{\frac{|V|}{2}}{n}} {\Comb{|V|}{n}}$
+\end{centering}
+\\
+Pr[hyperedge non-monochromatic] $\leq 1-P(m)$
+\\
+Pr[No hyperedge is monochromatic]$\leq (1-P(m))^{m}$
+\\
+Hence,
+\\ Pr[ $\exists$ colouring such that no hyperedge in $H$ is monochromatic]\\ $\leq$ No. of Colourings * Pr[No hyperedge in $H$ is monochromatic]  ..(Using Union Bound)
+\\= 2^{|V|}(1-P(m))^{m}
+\\
+We want: 
+\begin{centering}
+\\ 2^{|V|}(1-P(m))^{m} < 1\\
+$\implies$
+
+
+\\
+\vspace{3mm}
+(1-$P(m)$)^{m} < \frac {1}{2^{|V|}}
+\\
+\vspace{3mm}
+
+Using (1-$P(m)$)\leq $e^{-P(m)}$,\\
+\vspace{3mm}
+
+$e^{-mP(m)})$ $<$ $\frac{1}{2^{|V|}}$\\
+\vspace{3mm}
+
+2^{|V|} < $e^{mP(m)}$
+\vspace{3mm}
+
+\\ Taking $\ln$ both sides,
+\vspace{3mm}
+
+\\ $|V|\ln2 < mP(m)$
+\vspace{3mm}
+
+
+\\ $m > \frac{|V|\ln 2}{P(m)}$
+\\and \hspace{2mm} 
+\vspace{3mm}
+
+$ m \leq  \frac{|V|\ln 2}{P(m)}$ * $\Comb{|V|}{n}$
+\vspace{3mm}
+
+$ m \leq  \frac{|V|\ln 2}{\Comb{\frac{|V|}{2}}{n}}$ * $\Comb{|V|}{n}$
+
+\end{centering}
+\newline
+By choosing $|V|$ that minimizes $m$, we get:
+\\ $m\leq  n^{2}*2^{n}$  giving us an upper bound on $m(n)$.
+
+\end{document}
