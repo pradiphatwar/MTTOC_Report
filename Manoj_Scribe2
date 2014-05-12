@@ -1,0 +1,111 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+
+
+
+\begin{document}
+\hrule
+\vspace{2mm}
+
+{\sf CS6845:MT-TOC  \hfill Name: MANOJ KALASKAR}
+\vspace{3mm}
+
+{\sf Scribe- $\#2$ ($24^{th}-28^{th}$ Feb) \hfill Roll No: CS13M027}
+\vspace{3mm}
+
+\hrule
+
+\vspace{4mm}
+
+
+\par
+
+\centerline {\textbf {Coding Theory}}
+\vspace{5mm}
+\begin{itemize}
+\item 
+\textbf {General Settings:}\\
+1) Communication over space:\\
+   Two people are distinct points in space, uses physical channel for communication \\
+2) Communication over time:\\
+   We store information and use it in near future. \\
+
+\item
+\textbf{Modeling Channel:}\\
+1) Noiseless channel: \\
+     No message lost or corrupted.\\ \\
+    We think on the following question. (Source: Prof. Jayalal's  Notes)\\
+\par
+  How do we encode the message in such a way that we
+can get away with minimal number of bits being sent across. This task is familar to us by the name $compression$ and $decompression$. But, really, how much can we compress without losing information?\\
+
+Example : We want to send a message whose contents is what is written in a piece of paper. But in advance we know that the paper is almost empty (say only 1 out of the 100 characters(or bits) is non-trivial(1) everything else is blank(0)). How do we describe this knowledge? One way is to look at it as a probability distribution. That is, we say, choose a character randomly from this paper, it is blank with probability 0.99.
+One trivial strategy is to send 100 characters. But this is far from efficient because there is only 1 non-blank symbol. Here is a better scheme. Let us send the information in the paper as blocks of length 10 characters each. For each block of size 10, if there is a non-blank symbol, we send the
+block as it, adding a 1 on the left (as a delimiter). Otherwise, we send it across as a single 0. Viewing the paper to be sent, as a random source of characters, the expected size of the block can be calculated as follows.\\\\
+1*Pr[ Block is all-zero ] + 11*Pr[ Block is no all-zero]\\ = 11-(10 * (0.99)^{10}) \\= $2 bits!$\\
+
+Further, if we us fix the size of the paper to be 100 characters. Since only one of the blocks will be sent as it is, and all the others will be just one bit. So the total length of the message that will be sent is really 9 + 11 = 20bits (assuming each character is encoded using only one bit).
+One intuition that the above example is giving us that we want to send the high probability event with a lower length sequence to reach optimality. But what is really the optimal one? Shannon asked and answered this question in the Noisless coding theorem. To answer thequestion, he associated a non-negative real number which captures the structural information about the object in a more precise way. This became backbone of the theory he developed. This was the notion of $entropy$ of a source which measures the amount of randomness in the object to be sent
+across. \\\\
+
+Let $D$ : $U$ $\rightarrow [0,1]$ be a probability distribution on the domain $U$. Let $X$ be the random variable with distribution $D$.\\\\
+The $entropy$ of the distribution is:\\\\
+
+\begin{centering}
+
+$H(D)$ = $\sum \limits_{x \in U} D(x) log$ $\frac {1}{D(x)}$\\
+
+\end{centering}
+
+
+\item
+\textbf{Noiseless Coding Theorem:}(Source Coding Theorem)\\
+
+
+$For$ $a$ $finite$ $set$ $U$, $for$ $every$ $distribution$ $D$ : $U$ $\rightarrow$  $[0,1]$, $\exists$ $functions$\\ $ Enc$ :$ U \rightarrow$ $[0,1]^{*}$ $and$ $ Dec : {0,1}^{*} \rightarrow U$ $such$ $that$  $\forall x$: $Dec(Enc(x))= x$ and,\\
+
+
+\begin{centering}
+
+$H(D) \leq  E_{x \in U} |Enc(x)| \leq H(D)+1$ $\backslash \backslash $ $Expected$ $Block$ $Size\\\\$
+
+
+\end{centering}
+
+Moreover NO other pair functions that achieves the first condition can achieve the second condition.\\
+
+\item
+\textbf{Upper Bound}\\
+Let X be a 0-1 random variable.\\
+For each message round the probability to the nearest power of 2(use $i$ bits to send)\\
+
+\begin{centering}
+$D(X=0) = 2^{-i} \hspace{7mm} \backslash\backslash$ $i$ $bits\\$
+$D(X=1) = 2^{-i+1} \hspace{7mm} \backslash\backslash i+1$ $bits$ (1 extra bit for delimiter)\\
+\end{centering}
+\vspace{3mm}
+Expected Size of Enc(x)= $E_{x\in U}|Enc(x)| \leq (\sum \limits_{x \in U}D(x) log\frac{1}{D(x)})+1 \\\\$
+
+\newpage
+\item
+\textbf{Binary Symmetric Channel}
+
+- Probability of flipping a bit is uniform and less than 1/2.
+
+
+\textbf{Noisy Coding Theorem:}\\
+For 0 $\leq$p $<$ 1/2 , c $>$ $\frac{1}{1-H(p+\epsilon)}$ (here epsilon is rounding error for message)\\\\
+$\exists \delta > 0$, s.t. for large enough $n$, $\exists Dec, \exists Enc$, $n=ck$ \\
+
+$\forall x \in$ \{0,1\}^{k} \\ \\
+\begin{centering}
+\hspace{5mm}\framebox[1.1\width]{
+$Pr{\limits_\eta}(Dec(Enc(x)+\eta)= x) \geq 1 - 2^{-n\delta}$
+}
+%\par
+\end{centering}
+\end{itemize}
+
+
+\end{document}
